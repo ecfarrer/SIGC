@@ -1,5 +1,5 @@
-##Split data
-sampling.function<-function(species.info,trainProp){
+##Split data, try 2
+sampling.function<-function(species.info,trainProp){ 
   train<-sample(1:dim(species.info)[1],floor(dim(species.info)[1]*trainProp))
   test<-setdiff(1:dim(species.info)[1],  train)
   return(list(train=species.info[train,],test=species.info[test,]))
