@@ -1,23 +1,24 @@
 ##Overlays and extracts the abundance (freq of cell occurrence) of each pairs
+
 merge.names<-function(hh){
   aa<-length(hh)
   bb<-rbind(as.data.frame(hh[[1]]),as.data.frame(hh[[2]]))
   if(aa==2){
-    return(bb)
+  	return(bb)
   } else for(i in 2:aa){bb<-rbind(bb,as.data.frame(hh[[i]]))};
   return(bb)
 }
 
 species.search<-function(spec1,spec2){
-  #### Loading useful packages####
+#### Loading useful packages####
   my_packages<-c('raster', 'rgdal', 'biomod2', 'sp', 'maptools', 'SDMTools', 'rgbif', 'dismo', 'rgeos', 'XML')
   lapply(my_packages, require, character.only=T)
-    
+
 #   source("/Users/farrer/Dropbox/EmilyComputerBackup/Documents/Proposals&Meetings/SIGC2013/sigccode/bs.functions.new.r")
 #   source("c:/Users/sean maher/Dropbox/SIGC Resources Dropbox/Effects of species interactions on plants meta-analyses/bs.functions.new.r")
-    
-  worldclim_data <- getData('worldclim', var='bio', res=10)
 
+  worldclim_data <- getData('worldclim', var='bio', res=10)
+  
   ## A list of length equal to length(species_names)
   species_records <- vector("list", length(spec1))
   ### Downloading records from GBIF using gbif() and storing them in species_records
@@ -26,14 +27,14 @@ species.search<-function(spec1,spec2){
   ## Only georeferenced records
   ## Only records from 1 Jan 1970 onwards
   for (i in seq(along=species_records)){
-    species_records[[i]] <- gbif(unlist(lapply(strsplit(spec1, " "),
-                                               function(x) x[1]))[i], 
-                                 paste(unlist(lapply(strsplit(spec1, " "),
-                                                     function(x) x[2]))[i], "*", sep = ""), 
-                                 geo=TRUE, removeZeros = TRUE, args=c('startdate=1970-01-01'), nrecs = 10000, end = 10000)#, nrecs = 500, end = 500
-    
-    ## Data cleaning
-    ## Removing records with > 20000 m
+  	species_records[[i]] <- gbif(unlist(lapply(strsplit(spec1, " "),
+  	                                               function(x) x[1]))[i], 
+                                paste(unlist(lapply(strsplit(spec1, " "),
+                                                   function(x) x[2]))[i], "*", sep = ""), 
+                                geo=TRUE, removeZeros = TRUE, args=c('startdate=1970-01-01'), nrecs = 10000, end = 10000)#, nrecs = 500, end = 500
+                                    
+  ## Data cleaning
+  ## Removing records with > 20000 m
     species_records[[i]] <- species_records[[i]][species_records[[i]]$coordUncertaintyM <= 20000 | is.na(species_records[[i]]$coordUncertaintyM),]
     ## Adding a cellID field identifying which worldclim raster cell each gbif record falls into
     species_records[[i]]$cellID <- factor(cellFromXY(worldclim_data[[1]], species_records[[i]][c("lon", "lat")])) 
