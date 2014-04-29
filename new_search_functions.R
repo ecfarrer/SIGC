@@ -1,5 +1,4 @@
-#function to overlay and extract the abundance (freq of cell occurrence) of
-#each pairs
+#function to overlay and extract the abundance (freq of cell occurrence) of each pairs
 
 merge.names<-function(hh){
   aa<-length(hh)
