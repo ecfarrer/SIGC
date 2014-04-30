@@ -46,7 +46,7 @@ species.search<-function(spec1,spec2){
     	                             SP1P <- as.data.frame(SP1)
 } else SP1P <- merge.names(species_records) #for species with two species names (i.e. species name has changed)
 
-  #### Species Distribution 2 Data #### 
+#### Species Distribution 2 Data #### 
   ### Creating useful objects
     
   ## A list of length equal to length(species_names)
