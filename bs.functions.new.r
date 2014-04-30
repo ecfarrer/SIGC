@@ -1,6 +1,6 @@
 ##Split data, try 2
-sampling.function<-function(species.info,trainProp){ 
-  train<-sample(1:dim(species.info)[1],floor(dim(species.info)[1]*trainProp))
+sampling.function<-function(species.info,trainProp){
+  train<-sort(sample(1:dim(species.info)[1],floor(dim(species.info)[1]*trainProp)))
   test<-setdiff(1:dim(species.info)[1],  train)
   return(list(train=species.info[train,],test=species.info[test,]))
 }
@@ -14,6 +14,9 @@ make.training.eval<-function(AB,Ao,Bo,oo,trainProp){
   Ao<-Ao[is.na(Ao[,1])==FALSE,]
   Bo<-Bo[is.na(Bo[,1])==FALSE,]
   oo<-oo[is.na(oo[,1])==FALSE,]
+  
+  #reduce the size of oo to the total number of observations
+  oo<-oo[sample(nrow(oo),sum(dim(AB)[1],dim(Ao)[1],dim(Bo)[1])),]
   
   PseudoA <- rbind(Bo,oo) 
   PseudoB <- rbind(Ao,oo)
@@ -34,10 +37,10 @@ make.training.eval<-function(AB,Ao,Bo,oo,trainProp){
   fiv<-sampling.function(backgrB,trainProp)
   
   #determine which of the pseudoabsence are points of occurrence of other species
-  sixT<-which(fur[[1]][,22] %in% Bo[,22] && fiv[[1]][,21] %in% Bo[,21])
-  sixE<-which(fur[[2]][,22] %in% Bo[,22] && fur[[2]][,21] %in% Bo[,21])
-  sevT<-which(fiv[[1]][,22] %in% Ao[,22] && fiv[[1]][,21] %in% Ao[,21])
-  sevE<-which(fiv[[2]][,22] %in% Ao[,22] && fiv[[2]][,21] %in% Ao[,21])
+  sixT<-which(fur[[1]][,20] %in% Bo[,20])
+  sixE<-which(fur[[2]][,20] %in% Bo[,20])
+  sevT<-which(fiv[[1]][,20] %in% Ao[,20])
+  sevE<-which(fiv[[2]][,20] %in% Ao[,20])
   
   ##set up Presence/Absence column for each species for each set
   #AB, A0 == 1; 00 == 0
