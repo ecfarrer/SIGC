@@ -31,7 +31,7 @@ species.search<-function(spec1,spec2){
   	                                               function(x) x[1]))[i], 
                                 paste(unlist(lapply(strsplit(spec1, " "),
                                                    function(x) x[2]))[i], "*", sep = ""), 
-                                geo=TRUE, removeZeros = TRUE, args=c('startdate=1970-01-01'), nrecs = 10000, end = 10000)#, nrecs = 500, end = 500
+                                geo=TRUE, removeZeros = TRUE, args=c('startdate=1970-01-01'))#, nrecs = 500, end = 500
 
   ## Data cleaning
   ## Removing records with > 20000 m
