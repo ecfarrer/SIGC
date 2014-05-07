@@ -57,7 +57,7 @@ species.search<-function(spec1,spec2){
   for (i in seq(along=species_records2)){
   	species_records2[[i]] <- gbif(unlist(lapply(strsplit(spec2, " "), function(x) x[1]))[i],
   	  paste(unlist(lapply(strsplit(spec2, " "), function(x) x[2]))[i], "*", sep = ""),
-  	  geo=TRUE, removeZeros = TRUE, args=c('startdate=1970-01-01'), nrecs = 10000, end = 10000)#, nrecs = 500, end=500
+  	  geo=TRUE, removeZeros = TRUE, args=c('startdate=1970-01-01'))#, nrecs = 500, end=500
   ### Data cleaning
   ## Removing records with > 20000 m uncertainty
   species_records2[[i]] <- species_records2[[i]][species_records2[[i]]$coordUncertaintyM <= 20000 | is.na(species_records2[[i]]$coordUncertaintyM),]
@@ -97,9 +97,11 @@ species.search<-function(spec1,spec2){
    proj4string(SP2P) <- proJ
    circsSP1 <- circles(SP1P, d=40000, lonlat=TRUE)
    polSP1 <- gUnaryUnion(circsSP1@polygons)
-   #   proj4string(polSP1) <- proj
+   polSP1 <- spTransform(polSP1, CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0"))
+
    circsSP2 <- circles(SP2P, d=40000, lonlat=TRUE)
    polSP2 <- gUnaryUnion(circsSP2@polygons)
+   polSP2 <- spTransform(polSP2, CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0"))
    
    #crop the bubbles to continents not oceans: 
    rangeSP1 <- crop(x=polSP1,wrld_simpl)
