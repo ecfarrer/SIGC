@@ -93,8 +93,8 @@ species.search<-function(spec1,spec2){
    proJ<-CRS('+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0')
    coordinates(SP1P) <- ~lon+lat
    coordinates(SP2P) <- ~lon+lat
-   proj4string(SP1P) <- proJ
-   proj4string(SP2P) <- proJ
+   #proj4string(SP1P) <- proJ#for some reason this doesn't work anymore, it gives an error
+   #proj4string(SP2P) <- proJ
    circsSP1 <- circles(SP1P, d=40000, lonlat=TRUE)
    polSP1 <- gUnaryUnion(circsSP1@polygons)
    polSP1 <- spTransform(polSP1, CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0"))
